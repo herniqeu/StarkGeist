@@ -28,4 +28,4 @@ Os arquivos da documentação deste projeto estão na pasta [/docs](/docs), incl
 
 # Código
 
-Os arquivos de código estão na pasta [/codigo](/codigo).
+Os arquivos de código estão na pasta [/src](/src).
