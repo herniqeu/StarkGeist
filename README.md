@@ -8,9 +8,7 @@
 </tr>
 </table>
 
-# Projeto: Priotização de contas a pagar
-
-# StarkGeist
+# StarkGeist: Oráculo da sua empresa
 
 # Integrantes:
 
@@ -28,4 +26,4 @@ Os arquivos da documentação deste projeto estão na pasta [/docs](/docs), incl
 
 # Código
 
-Os arquivos de código estão na pasta [/codigo](/codigo).
+Os arquivos de código estão na pasta [/src](/src).
