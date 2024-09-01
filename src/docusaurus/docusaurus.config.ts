@@ -69,7 +69,6 @@ const config: Config = {
           position: 'left',
           label: 'Docs',
         },
-        {to: '/docs/Article', label: 'Article', position: 'left'},
         {
           href: 'https://github.com/herniqeu/StarkGeist',
           label: 'GitHub',
@@ -84,7 +83,7 @@ const config: Config = {
           title: 'Docs',
           items: [
             {
-              label: 'Docs',
+              label: 'Introdução',
               to: '/docs/StarkGeist',
             },
           ],
@@ -92,10 +91,6 @@ const config: Config = {
         {
           title: 'More',
           items: [
-            {
-              label: 'Article',
-              to: '/docs/Article',
-            },
             {
               label: 'GitHub',
               href: 'https://github.com/herniqeu/StarkGeist',

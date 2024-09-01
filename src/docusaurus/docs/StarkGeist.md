@@ -2,52 +2,50 @@
 sidebar_position: 1
 ---
 
-# Financial and Strategic Forecasting Platform
+# Plataforma de Previsão Financeira e Estratégica
 
-## Main Idea
+## Ideia Principal
 
-Our platform is designed to help medium to large companies make precise strategic decisions by analyzing financial and macroeconomic data combined with "what if" scenario simulations. It provides detailed forecasts and valuable insights that support effective management and robust strategic planning.
+Nossa plataforma foi projetada para ajudar empresas de médio a grande porte a tomar decisões estratégicas precisas, analisando dados financeiros e macroeconômicos combinados com simulações de cenários "what if". Ela fornece previsões detalhadas e insights valiosos que apoiam uma gestão eficaz e um planejamento estratégico robusto.
 
-## How the Platform Adds Value
+## Como a Plataforma Agrega Valor
 
-1. **Data-Driven Decisions**: Provides in-depth analysis of financial and macroeconomic data to support well-informed strategic decisions.
-2. **"What If" Scenario Simulations**: Allows users to simulate different scenarios and understand the potential impacts of each decision.
-3. **Accurate Forecasts**: Utilizes advanced artificial intelligence models to generate precise forecasts, helping leaders plan for the future with greater confidence.
-4. **User-Friendly Interface**: Designed with an intuitive interface that simplifies navigation and use of the platform, even for users with limited technical experience.
-5. **Detailed Reports**: Automatically generates comprehensive reports that can be shared with stakeholders to support strategic decisions.
+1. **Decisões Baseadas em Dados**: Oferece uma análise aprofundada dos dados financeiros e macroeconômicos para apoiar decisões estratégicas bem informadas.
+2. **Simulações de Cenários "What If"**: Permite aos usuários simular diferentes cenários e entender os impactos potenciais de cada decisão.
+3. **Previsões Precisas**: Utiliza modelos avançados de inteligência artificial para gerar previsões precisas, ajudando líderes a planejar o futuro com maior confiança.
+4. **Interface Fácil de Usar**: Projetada com uma interface intuitiva que simplifica a navegação e o uso da plataforma, mesmo para usuários com experiência técnica limitada.
+5. **Relatórios Detalhados**: Gera automaticamente relatórios abrangentes que podem ser compartilhados com as partes interessadas para apoiar decisões estratégicas.
 
-## Platform Workflow
+## Fluxo de Trabalho da Plataforma
 
+1. **Análise de Dados Financeiros**
+   - A plataforma analisa automaticamente os dados financeiros inseridos pelos usuários, como balanços patrimoniais, fluxos de caixa e outros relatórios financeiros importantes.
+   - Os usuários podem visualizar gráficos e tabelas detalhados para uma compreensão clara das tendências financeiras.
 
-1. **Financial Data Analysis**
-   - The platform automatically analyzes the financial data entered by users, such as balance sheets, cash flows, and other important financial reports.
-   - Users can view detailed graphs and tables for a clear understanding of financial trends.
+   <!-- ![Exemplo de Gráficos Financeiros]() -->
 
-   <!-- ![Financial Graphs Example]() -->
+2. **Simulações de Cenários "What If"**
+   - Os usuários podem criar simulações de cenários "what if" para prever o impacto de diferentes decisões estratégicas, como mudanças nos preços dos produtos, novas políticas de marketing ou investimentos em novas tecnologias.
+   - A interface permite fácil ajuste dos parâmetros de entrada para cada simulação.
 
-2. **"What If" Scenario Simulations**
-   - Users can create "what if" scenario simulations to predict the impact of different strategic decisions, such as changes in product prices, new marketing policies, or investments in new technologies.
-   - The interface allows easy adjustment of input parameters for each simulation.
+   <!-- ![Exemplo de Simulação "What If"]() -->
 
-   <!-- ![What If Simulation Example]() -->
+3. **Previsão e Modelagem**
+   - A plataforma gera previsões baseadas em modelos de IA, considerando dados históricos e variáveis econômicas.
+   - As previsões são apresentadas em gráficos de fácil compreensão, com opções para ajustar os horizontes temporais.
 
-3. **Forecasting and Modeling**
-   - The platform generates forecasts based on AI models, considering historical data and economic variables.
-   - Forecasts are presented in easy-to-understand graphs, with options to adjust time horizons.
+   <!-- ![Exemplo de Previsão]() -->
 
-   <!-- ![Forecasting Example]() -->
+4. **Colaboração e Compartilhamento**
+   - A plataforma permite que os usuários compartilhem relatórios e insights com membros da equipe ou partes interessadas externas diretamente pela interface.
 
-4. **Collaboration and Sharing**
-   - The platform allows users to share reports and insights with team members or external stakeholders directly through the interface.
-   - There are options for collaborative comments and real-time editing.
+## Vídeo no YouTube
 
-## YouTube Video
-
-<!-- [![Platform Tutorial](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID) -->
+<!-- [![Tutorial da Plataforma](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=VIDEO_ID) -->
 
 
 ---
 
-## Conclusion
+## Conclusão
 
-Our platform is a powerful tool for CFOs, CEOs, and Strategy Directors looking to transform financial and macroeconomic data into precise strategic decisions. With robust scenario simulation features, AI-based forecasts, and a user-friendly interface, it is the ideal choice for medium to large companies looking to enhance their management and strategic planning.
+Nossa plataforma é uma ferramenta poderosa para CFOs, CEOs e Diretores de Estratégia que desejam transformar dados financeiros e macroeconômicos em decisões estratégicas precisas. Com recursos robustos de simulação de cenários, previsões baseadas em IA e uma interface amigável, é a escolha ideal para empresas de médio a grande porte que buscam aprimorar sua gestão e planejamento estratégico.

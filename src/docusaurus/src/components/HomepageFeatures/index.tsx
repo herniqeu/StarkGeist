@@ -14,7 +14,8 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-Our tool is designed to integrate seamlessly into your workflow, enabling you to start making strategic decisions with precise data quickly and efficiently.      </>
+        Nossa ferramenta foi projetada para se integrar perfeitamente ao seu fluxo de trabalho, permitindo que você comece a tomar decisões estratégicas com dados precisos de forma rápida e eficiente.      
+      </>
     ),
   },
   {
@@ -22,7 +23,7 @@ Our tool is designed to integrate seamlessly into your workflow, enabling you to
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Let our tool handle the data analysis and calculations while you focus on what truly matters: strategy and growth.
+        Deixe nossa ferramenta cuidar da análise de dados e dos cálculos enquanto você se concentra no que realmente importa: estratégia e crescimento.
       </>
     ),
   },
@@ -31,7 +32,7 @@ Our tool is designed to integrate seamlessly into your workflow, enabling you to
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Leverage the power of artificial intelligence to simulate "what if" scenarios and generate detailed financial and economic forecasts, supporting high-impact strategic decisions.
+        Aproveite o poder da inteligência artificial para simular cenários "what if" e gerar previsões financeiras e econômicas detalhadas, apoiando decisões estratégicas de alto impacto      
       </>
     ),
   },

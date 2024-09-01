@@ -20,7 +20,7 @@ function HomepageHeader() {
           <Link
             className="button button--secondary button--lg"
             to="/docs/StarkGeist">
-            StarkGeist Tutorial - 5min ⏱️
+            Introdução ao StarkGeist - 5min ⏱️
           </Link>
         </div>
       </div>
