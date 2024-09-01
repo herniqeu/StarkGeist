@@ -84,8 +84,8 @@ pythonCopymodel = Sequential([
     Dense(16, activation='relu'),
     Dense(n_outputs)
 ])
-```
 model.compile(optimizer=Adam(learning_rate=0.001), loss='huber')
+```
 4. Aplicações para C-Levels
 Para CFOs:
 
