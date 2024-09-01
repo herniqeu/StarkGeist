@@ -1,98 +1,125 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.model_selection import train_test_split
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
-from tensorflow.keras.optimizers import Adam
 import matplotlib.pyplot as plt
+from statsmodels.tsa.arima.model import ARIMA
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.models import load_model
+import warnings
+import os
 
-# Set page title
-st.set_page_config(page_title="Financial Predictor")
+# Suprimir avisos
+warnings.filterwarnings("ignore")
 
-st.title("Financial Predictor")
+# Carregar dados
+@st.cache_data
+def load_data():
+    df = pd.read_csv('df_filtrado.csv')
+    df['Date'] = pd.to_datetime(df['Date'])
+    return df
 
-# File uploader
-uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
+df = load_data()
 
-if uploaded_file is not None:
-    # Load data
-    df = pd.read_csv(uploaded_file)
-    df_filtrado = df.copy()  # Assuming df_filtrado is the same as df in this context
+# Funções de previsão ARIMA
+def arima_forecast(data, column, steps=100):
+    if not pd.api.types.is_numeric_dtype(data[column]):
+        st.error(f"A coluna {column} não é numérica. Por favor, selecione uma coluna numérica para a previsão ARIMA.")
+        return None
+    
+    try:
+        model = ARIMA(data[column], order=(1, 1, 1))
+        model_fit = model.fit()
+        forecast = model_fit.forecast(steps=steps)
+        return forecast
+    except Exception as e:
+        st.error(f"Erro ao fazer a previsão ARIMA: {str(e)}")
+        return None
 
-    # Drop 'Date' column if it exists
-    if 'Date' in df_filtrado.columns:
-        df_filtrado = df_filtrado.drop(['Date'], axis=1)
-
-    # Define input and output columns
-    input_columns = df_filtrado.columns.tolist()
+# Funções de previsão da Rede Neural
+def prepare_nn_data(df):
+    input_columns = df.select_dtypes(include=[np.number]).columns.tolist()
     output_columns = ['Receita', 'Lucro Líquido', 'Despesas Operacionais', 'EBITDA', 'Endividamento']
-
-    # Prepare input (X) and output (y) data
-    X = df_filtrado[input_columns].values[:-1]
-    y = df_filtrado[output_columns].values[1:]
-
-    # Normalize the data
+    
+    X = df[input_columns].values[:-1]
+    y = df[output_columns].values[1:]
+    
     scaler_X = MinMaxScaler()
     scaler_y = MinMaxScaler()
     X_scaled = scaler_X.fit_transform(X)
     y_scaled = scaler_y.fit_transform(y)
+    
+    return X_scaled, y_scaled, scaler_X, scaler_y, input_columns, output_columns
 
-    # Split the data into train and test sets
-    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_scaled, test_size=0.2, random_state=42)
+def load_nn_model():
+    model_path = "stark_geist_model.keras"
+    if os.path.exists(model_path):
+        st.info("Carregando modelo existente...")
+        model = load_model(model_path)
+        return model
+    else:
+        st.error("Modelo não encontrado. Por favor, certifique-se de que o arquivo 'stark_geist_model.keras' está no diretório correto.")
+        return None
 
-    # Define the neural network model
-    model = Sequential([
-        Dense(64, activation='relu', input_shape=(X.shape[1],)),
-        Dropout(0.2),
-        Dense(32, activation='relu'),
-        Dropout(0.2),
-        Dense(16, activation='relu'),
-        Dense(5)
-    ])
+def nn_predict(model, input_data, scaler_y):
+    prediction_scaled = model.predict(input_data.reshape(1, -1))
+    prediction = scaler_y.inverse_transform(prediction_scaled)
+    return prediction[0]
 
-    # Compile the model
-    model.compile(optimizer=Adam(learning_rate=0.001), loss='mean_squared_error')
+# Interface Streamlit
+st.title('Plataforma de Previsão Financeira')
 
-    # Training section
-    st.header("Model Training")
-    epochs = st.slider("Number of epochs", min_value=10, max_value=1000, value=100, step=10)
-    train_button = st.button("Train Model")
+# Sidebar para seleção de modelo
+model_type = st.sidebar.radio("Selecione o modelo de previsão:", ('Série Temporal (ARIMA)', 'Rede Neural (What-If)'))
 
-    if train_button:
-        with st.spinner("Training in progress..."):
-            history = model.fit(X_train, y_train, epochs=epochs, validation_split=0.2, verbose=0)
-        
-        st.success("Training completed!")
-
-        # Plot training history
-        fig, ax = plt.subplots()
-        ax.plot(history.history['loss'], label='Training Loss')
-        ax.plot(history.history['val_loss'], label='Validation Loss')
-        ax.set_xlabel('Epoch')
-        ax.set_ylabel('Loss')
+if model_type == 'Série Temporal (ARIMA)':
+    st.header('Previsões de Série Temporal (ARIMA)')
+    
+    numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+    variable = st.selectbox('Escolha a variável para previsão:', numeric_columns)
+    
+    forecast = arima_forecast(df, variable)
+    
+    if forecast is not None:
+        fig, ax = plt.subplots(figsize=(12, 6))
+        ax.plot(df['Date'], df[variable], label='Histórico')
+        ax.plot(pd.date_range(start=df['Date'].iloc[-1], periods=len(forecast)), forecast, label='Previsão')
+        ax.set_title(f'Previsão ARIMA para {variable}')
         ax.legend()
         st.pyplot(fig)
 
-    # Prediction section
-    st.header("Make Predictions")
-    prediction_input = {}
-    for col in input_columns:
-        prediction_input[col] = st.number_input(f"Enter value for {col}", value=0.0)
-
-    predict_button = st.button("Make Prediction")
-
-    if predict_button:
-        input_data = np.array([list(prediction_input.values())])
-        input_scaled = scaler_X.transform(input_data)
-        prediction_scaled = model.predict(input_scaled)
-        prediction = scaler_y.inverse_transform(prediction_scaled)
-
-        st.subheader("Prediction Results:")
-        for i, col in enumerate(output_columns):
-            st.write(f"{col}: {prediction[0][i]:.2f}")
-
 else:
-    st.info("Please upload a CSV file to get started.")
+    st.header('Análise What-If com Rede Neural')
+    
+    X_scaled, y_scaled, scaler_X, scaler_y, input_columns, output_columns = prepare_nn_data(df)
+    model = load_nn_model()
+    
+    if model is not None:
+        st.sidebar.header('Ajuste as variáveis de entrada:')
+        input_values = {}
+        for col in input_columns:
+            default_value = df[col].iloc[-1]
+            input_values[col] = st.sidebar.slider(f'{col}:', 
+                                                  float(df[col].min()), 
+                                                  float(df[col].max()), 
+                                                  float(default_value))
+        
+        input_data = np.array([input_values[col] for col in input_columns])
+        input_data_scaled = scaler_X.transform(input_data.reshape(1, -1))
+        
+        prediction = nn_predict(model, input_data_scaled, scaler_y)
+        
+        st.subheader('Previsões baseadas nos inputs:')
+        for i, col in enumerate(output_columns):
+            st.metric(label=col, value=f"{prediction[i]:.2f}")
+        
+        fig, ax = plt.subplots(figsize=(12, 6))
+        ax.bar(output_columns, prediction)
+        ax.set_title('Previsões da Rede Neural')
+        ax.set_ylabel('Valor')
+        plt.xticks(rotation=45)
+        st.pyplot(fig)
+    else:
+        st.warning("Não foi possível carregar o modelo. Por favor, verifique se o arquivo do modelo está presente.")
+
+st.sidebar.markdown("---")
+st.sidebar.info("Esta plataforma utiliza modelos de série temporal (ARIMA) e redes neurais para fazer previsões financeiras e análises 'what-if'.")
