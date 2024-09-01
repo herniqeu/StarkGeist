@@ -8,7 +8,7 @@
 </tr>
 </table>
 
-# StarkGeist: Oráculo da sua empresa
+# StarkGeist: Oráculo financeiro
 
 # Integrantes:
 
