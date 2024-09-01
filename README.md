@@ -8,9 +8,7 @@
 </tr>
 </table>
 
-# Projeto: Priotização de contas a pagar
-
-# StarkGeist
+# StarkGeist: Oráculo da sua empresa
 
 # Integrantes:
 
