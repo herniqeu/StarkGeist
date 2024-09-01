@@ -7,9 +7,24 @@ from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import load_model
 import warnings
 import os
+import streamlit_shadcn_ui as ui
+import altair as alt
 
 # Suprimir avisos
 warnings.filterwarnings("ignore")
+
+st.set_page_config(layout="wide")
+
+# CSS code to hide Streamlit's menu and header
+hide_st_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+    """
+
+# Apply the CSS styles using markdown with HTML allowed
+st.markdown(hide_st_style, unsafe_allow_html=True)
 
 # Carregar dados
 @st.cache_data
@@ -69,7 +84,8 @@ def nn_predict(model, input_data, scaler_y):
 st.title('Plataforma de Previsão Financeira')
 
 # Sidebar para seleção de modelo
-model_type = st.sidebar.radio("Selecione o modelo de previsão:", ('Série Temporal (ARIMA)', 'Rede Neural (What-If)'))
+model_type = st.sidebar.radio("Selecione o modelo de previsão:", ('Série Temporal (ARIMA)', 'Rede Neural (What-If)', 'Dashboard'))
+# choice = ui.select(options=['Série Temporal (ARIMA)', 'Rede Neural (What-If)', 'Dashboard'], label='Selecione o modelo de previsão:')
 
 if model_type == 'Série Temporal (ARIMA)':
     st.header('Previsões de Série Temporal (ARIMA)')
@@ -87,7 +103,48 @@ if model_type == 'Série Temporal (ARIMA)':
         ax.legend()
         st.pyplot(fig)
 
-else:
+# if model_type == 'Série Temporal (ARIMA)':
+#     st.header('Previsões de Série Temporal (ARIMA)')
+    
+#     # Select only numeric columns for forecasting
+#     numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+#     variable = st.selectbox('Escolha a variável para previsão:', numeric_columns)
+    
+#     # Get the ARIMA forecast
+#     forecast = arima_forecast(df, variable)
+    
+#     if forecast is not None:
+#         # Create a DataFrame for the forecast data
+#         last_date = df['Date'].iloc[-1]  # Get the last date from the historical data
+#         forecast_dates = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=len(forecast))
+#         forecast_df = pd.DataFrame({
+#             'Date': forecast_dates,
+#             'Value': forecast,
+#             'Type': 'Previsão'
+#         })
+        
+#         # Create a DataFrame for the historical data
+#         historical_df = df[['Date', variable]].rename(columns={variable: 'Value'})
+#         historical_df['Type'] = 'Histórico'
+        
+#         # Combine both DataFrames
+#         combined_df = pd.concat([historical_df, forecast_df])
+        
+#         # Vega-Lite plot
+#         chart = alt.Chart(combined_df).mark_line().encode(
+#             x=alt.X('Date:T', title='Data'),
+#             y=alt.Y('Value:Q', title='Valor'),
+#             color='Type:N'
+#         ).properties(
+#             width=600,
+#             height=400,
+#             title=f'Previsão ARIMA para {variable}'
+#         )
+        
+#         # Display the chart in Streamlit
+#         st.altair_chart(chart, use_container_width=True)
+
+elif model_type == 'Rede Neural (What-If)':
     st.header('Análise What-If com Rede Neural')
     
     X_scaled, y_scaled, scaler_X, scaler_y, input_columns, output_columns = prepare_nn_data(df)
@@ -120,6 +177,85 @@ else:
         st.pyplot(fig)
     else:
         st.warning("Não foi possível carregar o modelo. Por favor, verifique se o arquivo do modelo está presente.")
+
+elif model_type == 'Dashboard':
+    value = ui.tabs(options=['Dashboard', 'Previsões', 'What-If'], default_value='Dashboard', key="kanaries")
+    st.header(value)
+
+    if value == "Dashboard":
+        # ui.element("img", src="https://pub-8e7aa5bf51e049199c78b4bc744533f8.r2.dev/pygwalker-banner.png", className="w-full")
+        # ui.element("link_button", text=value + " Github", url="https://github.com/Kanaries/pygwalker", className="mt-2", key="btn2")
+
+        # Define mocked data for each column
+        mock_data = {
+            'Receita': {'value': "$50,000.00", 'description': "+10.5% from last month"},
+            'Lucro Líquido': {'value': "$12,000.00", 'description': "+8.2% from last month"},
+            'Despesas Operacionais': {'value': "$8,500.00", 'description': "-5.4% from last month"},
+            'EBITDA': {'value': "$15,000.00", 'description': "+6.8% from last month"},
+            'Endividamento': {'value': "$30,000.00", 'description': "+2.3% from last month"},
+        }
+
+        # Create columns dynamically based on the number of output columns
+        cols = st.columns(len(mock_data))
+
+        # Display metric cards for each output column with mocked data
+        for idx, (key, data) in enumerate(mock_data.items()):
+            with cols[idx]:
+                ui.metric_card(
+                    title=key,
+                    content=data['value'],
+                    description=data['description'],
+                    key=f"card_{idx}"
+                )
+
+    elif value == "Previsões":
+        # ui.element("img", src="https://pub-8e7aa5bf51e049199c78b4bc744533f8.r2.dev/graphic-walker-banner.png", className="w-full")
+        # ui.element("link_button", text=value + " Github", url="https://github.com/Kanaries/graphic-walker", className="mt-2", key="btn2")
+
+        # st.header('Previsões de Série Temporal (ARIMA)')
+        
+        # Select only numeric columns for forecasting
+        numeric_columns = df.select_dtypes(include=[np.number]).columns.tolist()
+        variable = st.selectbox('Escolha a variável para previsão:', numeric_columns)
+        
+        # Get the ARIMA forecast
+        forecast = arima_forecast(df, variable)
+        
+        if forecast is not None:
+            # Create a DataFrame for the forecast data
+            last_date = df['Date'].iloc[-1]  # Get the last date from the historical data
+            forecast_dates = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=len(forecast))
+            forecast_df = pd.DataFrame({
+                'Date': forecast_dates,
+                'Value': forecast,
+                'Type': 'Previsão'
+            })
+            
+            # Create a DataFrame for the historical data
+            historical_df = df[['Date', variable]].rename(columns={variable: 'Value'})
+            historical_df['Type'] = 'Histórico'
+            
+            # Combine both DataFrames
+            combined_df = pd.concat([historical_df, forecast_df])
+            
+            # Vega-Lite plot
+            chart = alt.Chart(combined_df).mark_line().encode(
+                x=alt.X('Date:T', title='Data'),
+                y=alt.Y('Value:Q', title='Valor'),
+                color='Type:N'
+            ).properties(
+                width=600,
+                height=400,
+                title=f'Previsão ARIMA para {variable}'
+            )
+            
+            # Display the chart in Streamlit
+            st.altair_chart(chart, use_container_width=True)
+
+    elif value == "What-If":
+        ui.element("img", src="https://pub-8e7aa5bf51e049199c78b4bc744533f8.r2.dev/gwalkr-banner.png", className="w-full")
+        ui.element("link_button", text=value + " Github", url="https://github.com/Kanaries/gwalkr", className="mt-2", key="btn2")
+    # st.write("Selecionado:", value)
 
 st.sidebar.markdown("---")
 st.sidebar.info("Esta plataforma utiliza modelos de série temporal (ARIMA) e redes neurais para fazer previsões financeiras e análises 'what-if'.")

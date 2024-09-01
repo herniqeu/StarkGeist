@@ -58,10 +58,10 @@ const config: Config = {
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
       title: 'StarkGeist',
-      logo: {
-        alt: 'Logo StarkGeist',
-        src: 'img/logo.svg',
-      },
+      // logo: {
+      //   alt: 'Logo StarkGeist',
+      //   // src: 'img/logo.svg',
+      // },
       items: [
         {
           type: 'docSidebar',

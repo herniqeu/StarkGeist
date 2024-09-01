@@ -8,7 +8,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-  background-color: #42c6f1; /* Cor do banner alterada para azul */
+  background-color: #0e448f; /* Cor do banner alterada para azul */
 }
 
 @media screen and (max-width: 996px) {
