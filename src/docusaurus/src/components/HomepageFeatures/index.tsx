@@ -10,7 +10,7 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Implement',
+    title: 'Fácil Implementação',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
@@ -19,7 +19,7 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Foque no que é importante.',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
@@ -28,7 +28,7 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Powered by AI',
+    title: 'Impulsionado por IA.',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
