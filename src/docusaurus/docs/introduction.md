@@ -17,6 +17,18 @@ Nossa solução, GEIST, capacita CFOs, CEOs e Diretores de Estratégia com uma p
 
 ## GEIST
 
+GEIST é uma ferramenta que combina uma interface intuitiva com visualizações de dados simplificadas e interativas, tornando a análise avançada acessível para todos os níveis de usuários, independentemente de seu conhecimento técnico. Além disso, a plataforma oferece relatórios personalizados e insights acionáveis, adaptados às necessidades específicas da empresa, permitindo decisões rápidas e eficazes e facilitando a comunicação estratégica com stakeholders.
+
 # Canal
 
+Do ponto de vista de canais, GEIST será acessível através de uma plataforma própria baseada na web, permitindo que usuários e clientes acessem suas funcionalidades de qualquer lugar, a qualquer momento, utilizando dispositivos conectados à internet.
+
 # Próximos passos
+
+- Integração com ERP e Outros Sistemas Corporativos.
+
+- Desenvolvimento de Módulos de Inteligência Artificial Personalizados.
+
+- Expansão da Capacidade de Simulação de Cenários.
+
+- Implementação de Feedback Contínuo e Melhoria de Produto.
