@@ -1,9 +1,9 @@
-# StarkGeist - StarkBank Hackaton
+# StarkGeist - StarkBank Hackathon
 
 <table>
 <tr>
 <td>
-<a href= "https://starkbank.com/br"><img src="./docs/img/StarkBank.webp" alt="Vista Alegre" border="0" width="100%"></a>
+<a href= "https://starkbank.com/br"><img src="./docs/img/starkgeist.jpg" alt="Vista Alegre" border="0" width="100%"></a>
 </td>
 </tr>
 </table>
@@ -22,7 +22,7 @@ Para empresas de médio a grande porte, nossa ferramenta ajuda CFOs, CEOs e Dire
 
 # Documentação e Artigo
 
-Os arquivos da documentação deste projeto estão na pasta [/docs](/docs), inclusive os arquivos do artigo.
+Os arquivos da documentação deste projeto estão na pasta [/docs](src/docusaurus/docs), inclusive os arquivos do artigo.
 
 # Código
 
