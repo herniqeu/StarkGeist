@@ -73,7 +73,7 @@ auto_arima_model = pm.auto_arima(train_data,
                                  suppress_warnings=True,
                                  stepwise=True)
 ```
-3.2 Rede Neural de Aprendizado Profundo
+### 3.2 Rede Neural de Aprendizado Profundo
 A arquitetura de rede neural do StarkGeist foi expandida para incluir camadas LSTM (Long Short-Term Memory), permitindo a captura de dependências temporais de longo prazo em séries financeiras.
 ```python
 pythonCopymodel = Sequential([
@@ -84,9 +84,9 @@ pythonCopymodel = Sequential([
     Dense(16, activation='relu'),
     Dense(n_outputs)
 ])
-```
 model.compile(optimizer=Adam(learning_rate=0.001), loss='huber')
-4. Aplicações para C-Levels
+```
+### 4. Aplicações para C-Levels
 Para CFOs:
 
 Previsão precisa de fluxo de caixa, permitindo otimização de capital de giro
@@ -105,7 +105,7 @@ Modelagem de cenários de expansão, fusões e aquisições
 Análise de impacto de mudanças macroeconômicas na estratégia corporativa
 Otimização de portfólio de produtos/serviços baseada em projeções de mercado
 
-5. Simulações de Cenários "What-If"
+### 5. Simulações de Cenários "What-If"
 O StarkGeist incorpora um motor de simulação Monte Carlo avançado que permite aos executivos explorar múltiplos futuros possíveis e suas implicações financeiras.
 ```python
 pythonCopydef simulate_scenario(base_forecast, num_simulations=1000):
@@ -118,7 +118,7 @@ pythonCopydef simulate_scenario(base_forecast, num_simulations=1000):
 base_forecast = model.predict(X_test)
 simulated_scenarios = simulate_scenario(base_forecast)
 ```
-6. Integração com Processos Decisórios
+### 6. Integração com Processos Decisórios
 O StarkGeist não é apenas uma ferramenta de previsão, mas um facilitador de decisões estratégicas:
 
 Reuniões de Planejamento Estratégico: Alimenta discussões com projeções baseadas em dados
