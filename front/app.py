@@ -29,7 +29,11 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 # Carregar dados
 @st.cache_data
 def load_data():
-    df = pd.read_csv('df_filtrado.csv')
+    df = pd.read_csv('df_filtradoV2.1.csv')
+
+    if 'Unnamed: 0' in df.columns:
+        df = df.drop(columns=['Unnamed: 0'])
+
     df['Date'] = pd.to_datetime(df['Date'])
     return df
 
@@ -42,7 +46,7 @@ def arima_forecast(data, column, steps=100):
         return None
     
     try:
-        model = ARIMA(data[column], order=(1, 1, 1))
+        model = ARIMA(data[column], order=(1, 1, 2))
         model_fit = model.fit()
         forecast = model_fit.forecast(steps=steps)
         return forecast
@@ -68,9 +72,15 @@ def prepare_nn_data(df):
 def load_nn_model():
     model_path = "stark_geist_model.keras"
     if os.path.exists(model_path):
-        st.info("Carregando modelo existente...")
-        model = load_model(model_path)
-        return model
+        try:
+            st.info("Carregando modelo existente...")
+            model = load_model(model_path)
+            return model
+        except Exception as e:
+            st.error(f"Erro ao carregar o modelo: {str(e)}")
+            st.error("Stacktrace:")
+            st.code(traceback.format_exc())
+            return None
     else:
         st.error("Modelo não encontrado. Por favor, certifique-se de que o arquivo 'stark_geist_model.keras' está no diretório correto.")
         return None
@@ -147,36 +157,69 @@ if model_type == 'Série Temporal (ARIMA)':
 elif model_type == 'Rede Neural (What-If)':
     st.header('Análise What-If com Rede Neural')
     
-    X_scaled, y_scaled, scaler_X, scaler_y, input_columns, output_columns = prepare_nn_data(df)
-    model = load_nn_model()
-    
-    if model is not None:
-        st.sidebar.header('Ajuste as variáveis de entrada:')
-        input_values = {}
-        for col in input_columns:
-            default_value = df[col].iloc[-1]
-            input_values[col] = st.sidebar.slider(f'{col}:', 
-                                                  float(df[col].min()), 
-                                                  float(df[col].max()), 
-                                                  float(default_value))
+    # Inicialize um contador de tentativas na sessão do Streamlit
+    if 'retry_count' not in st.session_state:
+        st.session_state.retry_count = 0
+
+    try:
+        X_scaled, y_scaled, scaler_X, scaler_y, input_columns, output_columns = prepare_nn_data(df)
+        model = load_nn_model()
         
-        input_data = np.array([input_values[col] for col in input_columns])
-        input_data_scaled = scaler_X.transform(input_data.reshape(1, -1))
+        if model is not None:
+            # Resetar o contador de tentativas se o modelo for carregado com sucesso
+            st.session_state.retry_count = 0
+
+            st.sidebar.header('Ajuste as variáveis de entrada:')
+            input_values = {}
+            for col in input_columns:
+                min_val = float(df[col].min())
+                max_val = float(df[col].max())
+                
+                # Add a small offset if min and max are the same
+                if min_val == max_val:
+                    max_val += 0.000001
+                
+                default_value = float(df[col].iloc[-1])
+                
+                # Ensure default value is within the range
+                default_value = max(min_val, min(max_val, default_value))
+                
+                input_values[col] = st.sidebar.slider(f'{col}:', 
+                                                      min_val,
+                                                      max_val, 
+                                                      default_value)
+            
+            input_data = np.array([input_values[col] for col in input_columns])
+            input_data_scaled = scaler_X.transform(input_data.reshape(1, -1))
+            
+            prediction = nn_predict(model, input_data_scaled, scaler_y)
+            
+            st.subheader('Previsões baseadas nos inputs:')
+            for i, col in enumerate(output_columns):
+                st.metric(label=col, value=f"{prediction[i]:.2f}")
+            
+            fig, ax = plt.subplots(figsize=(12, 6))
+            ax.bar(output_columns, prediction)
+            ax.set_title('Previsões da Rede Neural')
+            ax.set_ylabel('Valor')
+            plt.xticks(rotation=45)
+            st.pyplot(fig)
+        else:
+            raise Exception("Não foi possível carregar o modelo.")
+    except Exception as e:
+        st.error(f"Erro ao carregar o modelo ou processar dados: {str(e)}")
         
-        prediction = nn_predict(model, input_data_scaled, scaler_y)
+        # Incrementar o contador de tentativas
+        st.session_state.retry_count += 1
         
-        st.subheader('Previsões baseadas nos inputs:')
-        for i, col in enumerate(output_columns):
-            st.metric(label=col, value=f"{prediction[i]:.2f}")
-        
-        fig, ax = plt.subplots(figsize=(12, 6))
-        ax.bar(output_columns, prediction)
-        ax.set_title('Previsões da Rede Neural')
-        ax.set_ylabel('Valor')
-        plt.xticks(rotation=45)
-        st.pyplot(fig)
-    else:
-        st.warning("Não foi possível carregar o modelo. Por favor, verifique se o arquivo do modelo está presente.")
+        # Limitar o número de tentativas para evitar loops infinitos
+        if st.session_state.retry_count < 3:
+            st.warning("Tentando recarregar a página em 5 segundos...")
+            time.sleep(5)
+            st.experimental_rerun()
+        else:
+            st.error("Falha ao carregar o modelo após várias tentativas. Por favor, verifique o arquivo do modelo e tente novamente mais tarde.")
+            st.session_state.retry_count = 0 
 
 elif model_type == 'Dashboard':
     value = ui.tabs(options=['Dashboard', 'Previsões', 'What-If'], default_value='Dashboard', key="kanaries")
