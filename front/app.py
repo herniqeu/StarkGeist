@@ -29,7 +29,11 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 # Carregar dados
 @st.cache_data
 def load_data():
-    df = pd.read_csv('df_filtrado.csv')
+    df = pd.read_csv('df_filtradoV2.1.csv')
+
+    if 'Unnamed: 0' in df.columns:
+        df = df.drop(columns=['Unnamed: 0'])
+
     df['Date'] = pd.to_datetime(df['Date'])
     return df
 
@@ -42,7 +46,7 @@ def arima_forecast(data, column, steps=100):
         return None
     
     try:
-        model = ARIMA(data[column], order=(1, 1, 1))
+        model = ARIMA(data[column], order=(1, 1, 2))
         model_fit = model.fit()
         forecast = model_fit.forecast(steps=steps)
         return forecast
@@ -68,9 +72,15 @@ def prepare_nn_data(df):
 def load_nn_model():
     model_path = "stark_geist_model.keras"
     if os.path.exists(model_path):
-        st.info("Carregando modelo existente...")
-        model = load_model(model_path)
-        return model
+        try:
+            st.info("Carregando modelo existente...")
+            model = load_model(model_path)
+            return model
+        except Exception as e:
+            st.error(f"Erro ao carregar o modelo: {str(e)}")
+            st.error("Stacktrace:")
+            st.code(traceback.format_exc())
+            return None
     else:
         st.error("Modelo não encontrado. Por favor, certifique-se de que o arquivo 'stark_geist_model.keras' está no diretório correto.")
         return None
@@ -154,11 +164,22 @@ elif model_type == 'Rede Neural (What-If)':
         st.sidebar.header('Ajuste as variáveis de entrada:')
         input_values = {}
         for col in input_columns:
-            default_value = df[col].iloc[-1]
+            min_val = float(df[col].min())
+            max_val = float(df[col].max())
+            
+            # Add a small offset if min and max are the same
+            if min_val == max_val:
+                max_val += 0.000001
+            
+            default_value = float(df[col].iloc[-1])
+            
+            # Ensure default value is within the range
+            default_value = max(min_val, min(max_val, default_value))
+            
             input_values[col] = st.sidebar.slider(f'{col}:', 
-                                                  float(df[col].min()), 
-                                                  float(df[col].max()), 
-                                                  float(default_value))
+                                                  min_val,
+                                                  max_val, 
+                                                  default_value)
         
         input_data = np.array([input_values[col] for col in input_columns])
         input_data_scaled = scaler_X.transform(input_data.reshape(1, -1))
