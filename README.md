@@ -20,7 +20,7 @@
 
 # Descrição do Projeto
 
-Uma grande empresa tenta priorizar suas contas a pagar, mas enfrenta a complexidade do processo, que resulta em perda de tempo significativa. A StarkGeist oferece uma solução que otimiza a priorização de pagamentos, trazendo eficiência na tomada de decisão e evitando o desperdício de tempo.
+Para empresas de médio a grande porte, nossa ferramenta ajuda CFOs, CEOs e Diretores de Estratégia a tomar decisões estratégicas com precisão. Analisando dados financeiros e macroeconômicos e simulando cenários de "what if", a ferramenta oferece previsões exatas e insights detalhados, garantindo uma gestão precisa e um planejamento estratégico eficaz para moldar o futuro da empresa.
 
 # Documentação e Artigo
 
