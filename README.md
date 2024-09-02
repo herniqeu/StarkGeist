@@ -14,7 +14,7 @@
 
 * [Arthur Tsukamoto](https://www.linkedin.com/in/arthur-tsukamoto/)
 * [Henrique Godoy](https://www.linkedin.com/in/henrique-godoy-879138252/)
-* [José Vitor Alencar](https://www.linkedin.com/in/fabio-piemonte-823a65211/)
+* [José Vitor Alencar](https://www.linkedin.com/in/josevalencar/)
 
 # Descrição do Projeto
 
